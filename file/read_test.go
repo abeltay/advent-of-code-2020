@@ -4,17 +4,17 @@ import "testing"
 
 func TestReadFullData(t *testing.T) {
 	t.Run("should pass", func(t *testing.T) {
-		data, err := ReadFullData("../01/input.txt")
+		data, err := ReadFullData("testdata/input.txt")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if data[0] != "162" {
+		if data[0] != "1" {
 			t.Error("Data 0 doesn't match")
 		}
-		if data[1] != "164" {
+		if data[1] != "2" {
 			t.Error("Data 1 doesn't match")
 		}
-		if data[2] != "165" {
+		if data[2] != "3" {
 			t.Error("Data 2 doesn't match")
 		}
 	})
