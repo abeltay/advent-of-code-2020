@@ -1,38 +1,55 @@
 package aoc
 
 import (
+	"fmt"
+	"io"
 	"log"
-	"strconv"
-	"strings"
+	"os"
 )
 
 // Runner runs the algorithm to get the answer
-func Runner(data []string) int {
+func Runner(filename string) int {
+	arr := parseFile(filename)
 	var ans int
-	for i := range data {
-		var min, max int
-		var err error
-		var letter byte
-		s := strings.Split(data[i], " ")
-		snum := strings.Split(s[0], "-")
-		min, err = strconv.Atoi(snum[0])
-		if err != nil {
-			log.Fatal(err)
-		}
-		max, err = strconv.Atoi(snum[1])
-		if err != nil {
-			log.Fatal(err)
-		}
-		letter = s[1][0]
+	for i := range arr {
 		var count int
-		for j := range s[2] {
-			if s[2][j] == letter {
+		for j := range arr[i].text {
+			if arr[i].text[j] == arr[i].letter {
 				count++
 			}
 		}
-		if min <= count && count <= max {
+		if arr[i].first <= count && count <= arr[i].second {
 			ans++
 		}
 	}
 	return ans
+}
+
+func parseFile(filename string) []line {
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatalf("Could not open %q: %q", filename, err)
+	}
+	defer f.Close()
+
+	var arr []line
+	for {
+		var l line
+		_, err := fmt.Fscanf(f, "%d-%d %c: %s", &l.first, &l.second, &l.letter, &l.text)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		arr = append(arr, l)
+	}
+	return arr
+}
+
+type line struct {
+	first  int
+	second int
+	letter byte
+	text   string
 }
