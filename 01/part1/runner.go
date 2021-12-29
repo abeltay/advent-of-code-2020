@@ -17,11 +17,17 @@ func Runner(data []string) int {
 		arr[i] = num
 	}
 	sort.Ints(arr)
-	for i := range arr {
-		num := 2020 - arr[i]
-		loc := sort.SearchInts(arr, num)
-		if loc < len(arr) && arr[loc] == num {
-			return arr[i] * arr[loc]
+	for l := range arr {
+		h := len(arr) - 1
+		for l < h {
+			switch {
+			case arr[l]+arr[h] == 2020:
+				return arr[l] * arr[h]
+			case arr[l]+arr[h] < 2020:
+				l++
+			default:
+				h--
+			}
 		}
 	}
 	return 0
