@@ -11,23 +11,23 @@ import (
 // Runner runs the algorithm to get the answer
 func Runner(arr []line) int {
 	seen := make([]bool, len(arr))
-	var ans, pointer int
-	for pointer < len(arr) {
-		if seen[pointer] {
+	var acc, p int
+	for p < len(arr) {
+		if seen[p] {
 			break
 		}
-		seen[pointer] = true
-		switch arr[pointer].op {
+		seen[p] = true
+		switch arr[p].op {
 		case "acc":
-			ans += arr[pointer].val
+			acc += arr[p].val
 			fallthrough
 		case "nop":
-			pointer++
+			p++
 		case "jmp":
-			pointer += arr[pointer].val
+			p += arr[p].val
 		}
 	}
-	return ans
+	return acc
 }
 
 // ParseFile reads the file and converts it to a format for runner to use
