@@ -10,20 +10,22 @@ import (
 
 // Runner runs the algorithm to get the answer
 func Runner(arr []line) int {
+	seen := make([]bool, len(arr))
 	var acc, p int
 	for p < len(arr) {
+		seen[p] = true
 		switch arr[p].op {
 		case "acc":
 			acc += arr[p].val
 			p++
 		case "nop":
-			t := checkTermination(arr, p+arr[p].val, acc, 40)
+			t := checkTermination(arr, seen, p+arr[p].val, acc)
 			if t != 0 {
 				return t
 			}
 			p++
 		case "jmp":
-			t := checkTermination(arr, p+1, acc, 40)
+			t := checkTermination(arr, seen, p+1, acc)
 			if t != 0 {
 				return t
 			}
@@ -33,11 +35,12 @@ func Runner(arr []line) int {
 	return acc
 }
 
-func checkTermination(arr []line, p, acc, limit int) int {
-	for i := 0; i < limit; i++ {
-		if p == len(arr) {
-			return acc
+func checkTermination(arr []line, seen []bool, p, acc int) int {
+	for p < len(arr) {
+		if seen[p] {
+			return 0
 		}
+		seen[p] = true
 		switch arr[p].op {
 		case "acc":
 			acc += arr[p].val
@@ -48,7 +51,7 @@ func checkTermination(arr []line, p, acc, limit int) int {
 			p += arr[p].val
 		}
 	}
-	return 0
+	return acc
 }
 
 // ParseFile reads the file and converts it to a format for runner to use
