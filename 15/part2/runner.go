@@ -10,25 +10,25 @@ import (
 
 // Runner runs the algorithm to get the answer
 func Runner(arr []int) int {
-	prev := make(map[int]int)
-	seen := make(map[int]int)
-	var last int
+	seen := make(map[int][2]int)
 	for i := range arr {
-		seen[arr[i]] = i + 1
-		last = arr[i]
+		seen[arr[i]] = [2]int{-1, i + 1}
 	}
+	last := arr[len(arr)-1]
 	for i := len(seen) + 1; i <= 30000000; i++ {
-		pos2, ok := prev[last]
-		if !ok {
+		pos := seen[last]
+		if pos[0] == -1 {
 			last = 0
-			prev[last], seen[last] = seen[last], i
+			pos = seen[last]
+			seen[last] = [2]int{pos[1], i}
 		} else {
-			pos1 := seen[last]
-			last = pos1 - pos2
-			if _, ok = seen[last]; ok {
-				prev[last] = seen[last]
+			last = pos[1] - pos[0]
+			pos, ok := seen[last]
+			if !ok {
+				seen[last] = [2]int{-1, i}
+			} else {
+				seen[last] = [2]int{pos[1], i}
 			}
-			seen[last] = i
 		}
 		// fmt.Printf("turn: %d, last: %d\n", i, last)
 	}
