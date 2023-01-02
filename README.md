@@ -12,7 +12,6 @@ My attempt at <https://adventofcode.com/2020>
 3. Run `./run.sh` to run current day's main.go
 
 To test the template,
-1. `cp template/input_test.txt template/input.txt`
-2. Set day.txt to `template`
-2. Uncomment the command to run part2
-4. Run `./run.sh`
+1. Set day.txt to `template`
+1. Uncomment the code block for part2
+1. Run `./run.sh`
